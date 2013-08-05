@@ -1,0 +1,4 @@
+1. System requirement say Java 1.5, can I use 1.6 (it's what is currently installed on my OSX laptop)
+
+2. Should I code to support multi-threaded execution?
+
