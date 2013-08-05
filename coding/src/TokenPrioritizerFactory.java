@@ -1,9 +1,7 @@
-public class TokenPrioritizerFactory
-{
-    private static TokenPrioritizer singletonInstance = new TokenPrioritizerImpl();
+public class TokenPrioritizerFactory {
+	private static TokenPrioritizer singletonInstance = new TokenPrioritizerImpl();
 
-    static TokenPrioritizer getInstance()
-    {
-        return singletonInstance;
-    }
+	static TokenPrioritizer getInstance() {
+		return singletonInstance;
+	}
 }

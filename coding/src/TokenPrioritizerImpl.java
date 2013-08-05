@@ -1,13 +1,10 @@
-public class TokenPrioritizerImpl implements TokenPrioritizer
-{
+public class TokenPrioritizerImpl implements TokenPrioritizer {
 
-	public Token nextToken()
-	{
+	public Token nextToken() {
 		throw new UnsupportedOperationException("IMPLEMENT ME!");
 	}
 
-	public void addToken( Token theToken )
-	{
+	public void addToken(Token theToken) {
 		throw new UnsupportedOperationException("IMPLEMENT ME!");
 	}
 }
