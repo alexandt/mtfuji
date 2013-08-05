@@ -5,7 +5,7 @@ public class PrioritizationTest {
 		// Some dummy token IDs
 		String firstTokenID = "dummy-token-ID-1";
 		String secondTokenID = "dummy-token-ID-2";
-		String thirdTokenID = "dummy-token-ID-2";
+		String thirdTokenID = "dummy-token-ID-3";
 
 		// Create a couple of test Tokens
 		Token firstToken = new Token(firstTokenID, 3);
