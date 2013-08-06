@@ -8,10 +8,10 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 	 * The TimeStampedToken class wraps a token adding a time stamp used for sorting
 	 */
 	private static class TimeStampedToken implements Comparable<TimeStampedToken> {
-		private Date time;
+		private long time;
 		private Token token;
 
-		private TimeStampedToken(Date time, Token token) {
+		private TimeStampedToken(long time, Token token) {
 			this.time = time;
 			this.token = token;
 		}
@@ -20,12 +20,16 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 		public int compareTo(TimeStampedToken tokenWrapper) {
 			if (this.token.getPriority() < tokenWrapper.token.getPriority()) {
 				return -1;
-			}
-			else if (this.token.getPriority() > tokenWrapper.token.getPriority()) {
+			} else if (this.token.getPriority() > tokenWrapper.token.getPriority()) {
 				return 1;
-			}
-			else {
-				return this.time.compareTo(tokenWrapper.time);
+			} else {
+				if (this.time < tokenWrapper.time) {
+					return -1;
+				} else if (this.time > tokenWrapper.time) {
+					return 1;
+				} else {
+					throw new RuntimeException("Unable to process non unique tokens");
+				}
 			}
 		}
 
@@ -47,7 +51,7 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 	}
 
 	public synchronized void addToken(Token theToken) {
-		queue.offer(new TimeStampedToken(new Date(), theToken));
+		queue.offer(new TimeStampedToken(System.nanoTime(), theToken));
 	}
 
 	@Override

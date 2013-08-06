@@ -3,10 +3,10 @@ public class PrioritizationTest {
 	static int ITERATIONS = 10;
 
 	public static void main(String[] args) {
-		//testBasicOperation();
-		//testLowestToHighestPriorityInsertOrder();
+		testBasicOperation();
+		testLowestToHighestPriorityInsertOrder();
 		testFixedPriorityFIFOOrder();
-		//testTokenCounts();
+		testTokenCounts();
 	}
 
 	public static boolean testBasicOperation() {
@@ -26,13 +26,14 @@ public class PrioritizationTest {
 		Token fourthToken = new Token(fourthTokenID, 1);
 		Token fifthToken = new Token(fifthTokenID, 4);
 
-
 		// Add the tokens to the prioritizer
 		prioritizer.addToken(firstToken);
 		prioritizer.addToken(secondToken);
 		prioritizer.addToken(thirdToken);
 		prioritizer.addToken(fourthToken);
 		prioritizer.addToken(fifthToken);
+
+		//System.out.println(prioritizer.toString());
 
 		// Confirm that we get the correct token back from the prioritizer
 		Token returnedFirst = prioritizer.nextToken();
@@ -62,7 +63,7 @@ public class PrioritizationTest {
 			prioritizer.addToken(new Token(Integer.toString(ITERATIONS - i), i));
 		}
 
-		System.out.println(prioritizer.toString());
+		//System.out.println(prioritizer.toString());
 
 		// Validate prioritizer priority token order
 		for (int i = 0; i < ITERATIONS ; i++) {
@@ -91,7 +92,7 @@ public class PrioritizationTest {
 			prioritizer.addToken(new Token(Integer.toString(i), priority));
 		}
 
-		System.out.println(prioritizer.toString());
+		//System.out.println(prioritizer.toString());
 
 		// Validate prioritizer FIFO token order
 		for (int i = 0; i < ITERATIONS ; i++) {
@@ -118,7 +119,7 @@ public class PrioritizationTest {
 			prioritizer.addToken(new Token(Integer.toString(i), i));
 		}
 
-		System.out.println(prioritizer.toString());
+		//System.out.println(prioritizer.toString());
 
 		// Validate that correct number of tokens added
 		for (int i = 0; i < ITERATIONS ; i++) {
