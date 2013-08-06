@@ -10,7 +10,7 @@ public class PrioritizationTest {
 	}
 
 	public static boolean testBasicOperation() {
-		System.out.println("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		System.out.print("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
 		// Some dummy token IDs
 		String firstTokenID = "dummy-token-ID-1";
@@ -50,11 +50,12 @@ public class PrioritizationTest {
 		Token returnedFifth = prioritizer.nextToken();
 		assertTrue(returnedFifth.getTokenID().equals(fifthTokenID));
 
+		System.out.println(": PASS");
 		return true;
 	}
 
 	public static boolean testLowestToHighestPriorityInsertOrder() {
-		System.out.println("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		System.out.print("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
 		// Add tokens in backwards priority order
 		for (int i = 0; i < ITERATIONS ; i++) {
@@ -74,12 +75,12 @@ public class PrioritizationTest {
 			assertTrue((ITERATIONS - i) == tokenId);
 		}
 
-
+		System.out.println(": PASS");
 		return true;
 	}
 
 	public static boolean testFixedPriorityFIFOOrder() {
-		System.out.println("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		System.out.print("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
 		int priority = 1;
 
@@ -101,11 +102,12 @@ public class PrioritizationTest {
 			assertTrue(i == tokenId);
 		}
 
+		System.out.println(": PASS");
 		return true;
 	}
 
 	public static boolean testTokenCounts() {
-		System.out.println("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		System.out.print("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
 		// Add tokens
 		for (int i = 0; i < ITERATIONS ; i++) {
@@ -128,6 +130,7 @@ public class PrioritizationTest {
 		// Final call should return null
 		assertTrue(null == prioritizer.nextToken());
 
+		System.out.println(": PASS");
 		return true;
 	}
 
