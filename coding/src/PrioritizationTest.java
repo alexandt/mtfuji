@@ -3,14 +3,14 @@ public class PrioritizationTest {
 	static int ITERATIONS = 10;
 
 	public static void main(String[] args) {
-		testBasicOperation();
-		testLowestToHighestPriorityInsertOrder();
+		//testBasicOperation();
+		//testLowestToHighestPriorityInsertOrder();
 		testFixedPriorityFIFOOrder();
-		testTokenCounts();
+		//testTokenCounts();
 	}
 
 	public static boolean testBasicOperation() {
-		System.out.print("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		System.out.println("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
 		// Some dummy token IDs
 		String firstTokenID = "dummy-token-ID-1";
@@ -55,12 +55,14 @@ public class PrioritizationTest {
 	}
 
 	public static boolean testLowestToHighestPriorityInsertOrder() {
-		System.out.print("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		System.out.println("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
 		// Add tokens in backwards priority order
 		for (int i = 0; i < ITERATIONS ; i++) {
 			prioritizer.addToken(new Token(Integer.toString(ITERATIONS - i), i));
 		}
+
+		System.out.println(prioritizer.toString());
 
 		// Validate prioritizer priority token order
 		for (int i = 0; i < ITERATIONS ; i++) {
@@ -80,7 +82,7 @@ public class PrioritizationTest {
 	}
 
 	public static boolean testFixedPriorityFIFOOrder() {
-		System.out.print("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		System.out.println("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
 		int priority = 1;
 
@@ -88,6 +90,8 @@ public class PrioritizationTest {
 		for (int i = 0; i < ITERATIONS ; i++) {
 			prioritizer.addToken(new Token(Integer.toString(i), priority));
 		}
+
+		System.out.println(prioritizer.toString());
 
 		// Validate prioritizer FIFO token order
 		for (int i = 0; i < ITERATIONS ; i++) {
@@ -107,12 +111,14 @@ public class PrioritizationTest {
 	}
 
 	public static boolean testTokenCounts() {
-		System.out.print("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
+		System.out.println("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
 		// Add tokens
 		for (int i = 0; i < ITERATIONS ; i++) {
 			prioritizer.addToken(new Token(Integer.toString(i), i));
 		}
+
+		System.out.println(prioritizer.toString());
 
 		// Validate that correct number of tokens added
 		for (int i = 0; i < ITERATIONS ; i++) {

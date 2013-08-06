@@ -1,4 +1,7 @@
-1. System requirement say Java 1.5, can I use 1.6 (it's what is currently installed on my OSX laptop)
+1. Should the call to TokenPrioritizer.nextToken() modify data Prioritizer set of tokens? : YES
+  (i.e will change the underlying data structure)
 
-2. Should I code to support multi-threaded execution?
+2. System requirement say Java 1.5, can I use 1.6? (it's what is currently installed on my OSX laptop) : YES
+
+3. Should I code to support multi-threaded execution? : YES
 
