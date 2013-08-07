@@ -1,6 +1,11 @@
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+/**
+ * Implementation of TokenPrioritizer interface.  Tokens can be added in any
+ * order and can be fetched in priority order.  Priority is determined by
+ * token priority value and then timestamp
+ */
 public class TokenPrioritizerImpl implements TokenPrioritizer {
 
 	/**
@@ -18,7 +23,7 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 		/**
 		 * Compare token timestamps
 		 * @param otherToken
-		 * @return
+		 * @return -1,0,1 (less, equal, greater)
 		 */
 		@Override
 		public int compareTo(TimeStampedToken otherToken) {
@@ -31,6 +36,11 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 			}
 		}
 
+		/**
+		 * Provide equals implementation to match compareTo behavior
+		 * @param obj
+		 * @return
+		 */
 		@Override
 		public boolean equals(Object obj) {
 			if (obj == this) {
@@ -46,7 +56,7 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 
 		/**
 		 * Convert to string of token id and priority
-		 * @return
+		 * @return string representation
 		 */
 		@Override
 		public String toString() {
@@ -60,6 +70,13 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 	 */
 	private static class PriorityComparator implements Comparator<TimeStampedToken> {
 
+		/**
+		 * Compares tokens first on priority and secondly on
+		 * the natural ordering of TimeStampedTokens
+		 * @param first token
+		 * @param second token
+		 * @return -1,0,1 (less, equal, greater)
+		 */
 		@Override
 		public int compare(TimeStampedToken first, TimeStampedToken second) {
 			if (first.token.getPriority() < second.token.getPriority()) {
@@ -77,9 +94,9 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 			new PriorityQueue<TimeStampedToken>(INIT_QUEUE_SIZE, new PriorityComparator());
 
 	/**
-	 * Synchronized function to return the next available token from prioritizer.
-	 * If no tokens are available in prioritizer null is returned.
-	 * @return
+	 * Synchronized function to return the highest priority token from prioritizer.
+	 * If no tokens are stored in the prioritizer null is returned.
+	 * @return highest priority token
 	 */
 	public synchronized Token nextToken() {
 		TimeStampedToken timeStampedToken = queue.poll();
@@ -89,7 +106,7 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 	/**
 	 * Synchronized method to add a token to the prioritizer.  Assumes
 	 * token is well-formed and validated.  Assumes token is unique.
-	 * @param theToken
+	 * @param theToken to prioritize
 	 */
 	public synchronized void addToken(Token theToken) {
 		queue.offer(new TimeStampedToken(System.nanoTime(), theToken));
@@ -97,7 +114,7 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 
 	/**
 	 * Convert prioritized items into strings
-	 * @return
+	 * @return string representation
 	 */
 	@Override
 	public String toString() {
