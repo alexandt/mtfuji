@@ -4,8 +4,7 @@ import java.util.PriorityQueue;
 public class TokenPrioritizerImpl implements TokenPrioritizer {
 
 	/**
-	 * The TimeStampedToken class wraps a token adding a
-	 * nanosecond timestamp used for natural ordering
+	 * Wraps a token adding a nanosecond timestamp used for natural ordering
 	 */
 	private static class TimeStampedToken implements Comparable<TimeStampedToken> {
 		private long time;
@@ -17,19 +16,18 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 		}
 
 		/**
-		 * Compare two time stamped tokens.  Tokens are first compared
-		 * by priority and secondly by a nanosecond timestamp
-		 * @param tokenWrapper
+		 * Compare token timestamps
+		 * @param otherToken
 		 * @return
 		 */
 		@Override
-		public int compareTo(TimeStampedToken tokenWrapper) {
-			if (this.time < tokenWrapper.time) {
+		public int compareTo(TimeStampedToken otherToken) {
+			if (this.time < otherToken.time) {
 				return -1;
-			} else if (this.time > tokenWrapper.time) {
+			} else if (this.time > otherToken.time) {
 				return 1;
 			} else {
-				throw new RuntimeException("Unable to compare non unique time stamped tokens");
+				return 0;
 			}
 		}
 
@@ -56,7 +54,11 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 		}
 	}
 
-	public static class PriorityComparator implements Comparator<TimeStampedToken> {
+	/**
+	 * Compares tokens first on priority and secondly on
+	 * the natural ordering of TimeStampedTokens
+	 */
+	private static class PriorityComparator implements Comparator<TimeStampedToken> {
 
 		@Override
 		public int compare(TimeStampedToken first, TimeStampedToken second) {
@@ -70,8 +72,9 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 		}
 	}
 
-	private final PriorityComparator priorityComparator = new PriorityComparator();
-	private final PriorityQueue<TimeStampedToken> queue = new PriorityQueue<TimeStampedToken>(10, priorityComparator);
+	private static int INIT_QUEUE_SIZE = 10;
+	private final PriorityQueue<TimeStampedToken> queue =
+			new PriorityQueue<TimeStampedToken>(INIT_QUEUE_SIZE, new PriorityComparator());
 
 	/**
 	 * Synchronized function to return the next available token from prioritizer.
