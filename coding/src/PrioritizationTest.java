@@ -4,11 +4,14 @@ public class PrioritizationTest {
 
 	public static void main(String[] args) {
 		testBasicOperation();
-		testLowestToHighestPriorityInsertOrder();
-		testFixedPriorityFIFOOrder();
+		testPriorityOrdering();
+		testNaturalOrdering();
 		testTokenCounts();
 	}
 
+	/*
+	 * test mixture of priority and natural ordering of tokens
+	 */
 	public static boolean testBasicOperation() {
 		System.out.println("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
@@ -55,17 +58,20 @@ public class PrioritizationTest {
 		return true;
 	}
 
-	public static boolean testLowestToHighestPriorityInsertOrder() {
+	/*
+	 * test the priority ordering of tokens
+	 */
+	public static boolean testPriorityOrdering() {
 		System.out.println("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
-		// Add tokens in backwards priority order
+		// Add tokens in reverse priority order
 		for (int i = 0; i < ITERATIONS ; i++) {
 			prioritizer.addToken(new Token(Integer.toString(ITERATIONS - i), i));
 		}
 
 		//System.out.println(prioritizer.toString());
 
-		// Validate prioritizer priority token order
+		// Validate prioritizer token order
 		for (int i = 0; i < ITERATIONS ; i++) {
 			Token token = prioritizer.nextToken();
 
@@ -82,7 +88,10 @@ public class PrioritizationTest {
 		return true;
 	}
 
-	public static boolean testFixedPriorityFIFOOrder() {
+	/*
+	 * test the natural ordering of tokens based upon time by using a fixed priority
+	 */
+	public static boolean testNaturalOrdering() {
 		System.out.println("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
 		int priority = 1;
@@ -94,7 +103,7 @@ public class PrioritizationTest {
 
 		//System.out.println(prioritizer.toString());
 
-		// Validate prioritizer FIFO token order
+		// Validate prioritizer natural token order
 		for (int i = 0; i < ITERATIONS ; i++) {
 			Token token = prioritizer.nextToken();
 
@@ -111,6 +120,9 @@ public class PrioritizationTest {
 		return true;
 	}
 
+	/*
+	 * test the sized of prioritizer size collection
+	 */
 	public static boolean testTokenCounts() {
 		System.out.println("Running " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
