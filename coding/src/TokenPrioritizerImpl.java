@@ -65,13 +65,13 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 	}
 
 	/**
-	 * Compares tokens first on priority and secondly on
+	 * Compares tokens on priority and secondly on
 	 * the natural ordering of TimeStampedTokens
 	 */
 	private static class PriorityComparator implements Comparator<TimeStampedToken> {
 
 		/**
-		 * Compares tokens first on priority and secondly on
+		 * Compares tokens on priority and secondly on
 		 * the natural ordering of TimeStampedTokens
 		 * @param first token
 		 * @param second token
