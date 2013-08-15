@@ -1,5 +1,5 @@
 import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * Implementation of TokenPrioritizer interface.  Tokens can be added in any
@@ -9,49 +9,15 @@ import java.util.PriorityQueue;
 public class TokenPrioritizerImpl implements TokenPrioritizer {
 
 	/**
-	 * Wraps a token adding a nanosecond timestamp used for natural ordering
+	 * Wraps a token adding a nanosecond timestamp used for ordering
 	 */
-	private static class TimeStampedToken implements Comparable<TimeStampedToken> {
+	private static class TimeStampedToken {
 		private long time;
 		private Token token;
 
 		private TimeStampedToken(long time, Token token) {
 			this.time = time;
 			this.token = token;
-		}
-
-		/**
-		 * Compare token timestamps
-		 * @param otherToken
-		 * @return -1,0,1 (less, equal, greater)
-		 */
-		@Override
-		public int compareTo(TimeStampedToken otherToken) {
-			if (this.time < otherToken.time) {
-				return -1;
-			} else if (this.time > otherToken.time) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-
-		/**
-		 * Provide equals implementation to match compareTo behavior
-		 * @param obj
-		 * @return
-		 */
-		@Override
-		public boolean equals(Object obj) {
-			if (obj == this) {
-				return true;
-			}
-			if (obj == null || obj.getClass() != this.getClass()) {
-				return false;
-			}
-
-			TimeStampedToken timeStampedToken = (TimeStampedToken) obj;
-			return this.time == timeStampedToken.time;
 		}
 
 		/**
@@ -65,10 +31,10 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 	}
 
 	/**
-	 * Compares tokens on priority and secondly on
-	 * the natural ordering of TimeStampedTokens
+	 * Compares token jpg on priority and secondly on
+	 * the timestamp of TimeStampedTokens
 	 */
-	private static class PriorityComparator implements Comparator<TimeStampedToken> {
+	private static class PriorityAndTimeStampComparator implements Comparator<TimeStampedToken> {
 
 		/**
 		 * Compares tokens on priority and secondly on
@@ -84,31 +50,37 @@ public class TokenPrioritizerImpl implements TokenPrioritizer {
 			} else if (first.token.getPriority() > second.token.getPriority()) {
 				return 1;
 			} else {
-				return first.compareTo(second);
+				if (first.time < second.time) {
+					return -1;
+				} else if (first.time > second.time) {
+					return 1;
+				} else {
+					return 0;
+				}
 			}
 		}
 	}
 
 	private static int INIT_QUEUE_SIZE = 10;
-	private final PriorityQueue<TimeStampedToken> queue =
-			new PriorityQueue<TimeStampedToken>(INIT_QUEUE_SIZE, new PriorityComparator());
+	private final PriorityBlockingQueue<TimeStampedToken> queue =
+			new PriorityBlockingQueue<TimeStampedToken>(INIT_QUEUE_SIZE, new PriorityAndTimeStampComparator());
 
 	/**
-	 * Synchronized function to return the highest priority token from prioritizer.
+	 * Thread safe function to return the highest priority token from prioritizer.
 	 * If no tokens are stored in the prioritizer null is returned.
 	 * @return highest priority token
 	 */
-	public synchronized Token nextToken() {
+	public Token nextToken() {
 		TimeStampedToken timeStampedToken = queue.poll();
 		return (timeStampedToken != null ) ? timeStampedToken.token : null;
 	}
 
 	/**
-	 * Synchronized method to add a token to the prioritizer.  Assumes
+	 * Thread safe method to add a token to the prioritizer.  Assumes
 	 * token is well-formed and validated.  Assumes token is unique.
 	 * @param theToken to prioritize
 	 */
-	public synchronized void addToken(Token theToken) {
+	public void addToken(Token theToken) {
 		queue.offer(new TimeStampedToken(System.nanoTime(), theToken));
 	}
 
